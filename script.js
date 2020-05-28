@@ -1,46 +1,78 @@
-// Assignment Code
-var generateBtn = document.querySelector("#generate");
+var input = {};
+var upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var lower = "abcdefghijklmnopqrstuvwxyz";
+var num = "0123456789";
+var special = "~!@#";
+var button = document.getElementById("generate");
 
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
+button.addEventListener("click", function () {
+  var charLength = parseInt(
+    prompt("Enter how many characters you want your password to be.")
+  );
+  if (charLength > 7 && charLength < 30) {
+    promptUser();
+  } else {
+    alert("Must be between 8 and 30 characters.");
+  }
+  console.log(charLength);
 
-  passwordText.value = password;
-  //
+  function promptUser() {
+    var numChar = confirm(
+      "Would you like numbers? Press OK for yes, Cancel to skip."
+    );
+    var lowerChar = confirm(
+      "Would you like lowercase characters? Press OK for yes, Cancel to skip."
+    );
+    var upperChar = confirm(
+      "Would you like uppercase characters? Press OK for yes, Cancel to skip."
+    );
+    var specialChar = confirm(
+      "Would you like special characters? Press OK for yes, Cancel to skip."
+    );
 
-  function writePassword(pLength) {
-    var letters = "abcdefghijklmnopqrstuvwxyz",
-      numbers = "123456789",
-      characters = "!@#_",
-      password = "";
-    var len = Math.ceil(pLength / 2);
-    len = len - 1;
-    var characters = pLength - 2 * len;
-
-    for (i = 0; i < len; i++) {
-      password += letters.charAt(Math.floor(Math.random() * letters.length));
-      password += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    if (numChar) {
+      input["num"] = num;
+    } else if (!numChar) {
+      !input["num"];
     }
 
-    for (i = 0; i < lcharacters; i++)
-      password += characters.charAt(
-        Math.floor(Math.random() * characters.length)
-      );
-
-    password = password
-      .split("")
-      .sort(function() {
-        return 0.5 - Math.random();
-      })
-      .join("");
-
-    return password;
+    if (lowerChar) {
+      input["lower"] = lower;
+    } else if (!lowerChar) {
+      !input["lower"];
+    }
+    if (upperChar) {
+      input["upper"] = upper;
+    } else if (!upperChar) {
+      !input["upper"];
+    }
+    if (specialChar) {
+      input["special"] = special;
+    } else if (!specialChar) {
+      !input["special"];
+    }
+    if (!numChar && !specialChar && !upperChar && !lowerChar) {
+      alert("Please try again.");
+    }
+    console.log(input);
   }
 
-  // Add event listener to generate button
-  generateBtn.addEventListener("click", writePassword);
-  {
-    document.getElementById("generate").innerHTML = "Generate Password";
+  function generatePassword() {
+    let finalPW = "";
+    for (var i = 0; i < charLength; i++) {
+      let passwordChar = Object.keys(input);
+      let randomEl =
+        passwordChar[Math.floor(Math.random() * passwordChar.length)];
+      let char = getRandomCharacter(input[randomEl]);
+      finalPW += char;
+      console.log("RandomCharacter", char);
+      console.log(finalPW, finalPW.length);
+    }
+    return finalPW;
   }
-}
+  function getRandomCharacter(str) {
+    return str[Math.floor(Math.random() * str.length)];
+  }
+  generatePassword();
+  password.innerHTML = generatePassword();
+});
